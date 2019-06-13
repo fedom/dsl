@@ -32,4 +32,12 @@ public:
 			: MyBaseException(s, file, line) { exception_name_ = "ParserUnwantedTokenException";}
 };
 
+
+class LookAheadStepBeyondCapacity : public MyBaseException { 
+public:
+	LookAheadStepBeyondCapacity(const char *s, const char *file, int line) 
+			: MyBaseException(s, file, line) { exception_name_ = "LookAheadStepBeyondCapacity";}
+};
+
+
 #endif//__MY_EXCEPT_H__

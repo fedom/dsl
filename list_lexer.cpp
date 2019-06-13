@@ -41,6 +41,10 @@ Token ListLexer::GetNextToken() {
 			Consume();
 			return Token(TOKEN_COMMA, ",");
 
+		} else if (c_ == '=') {
+			Consume();
+			return Token(TOKEN_EQUAL, "=");
+
 		} else {
 			std::string s;
 			s += c_;

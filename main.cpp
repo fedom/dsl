@@ -16,7 +16,7 @@ void usage(const char *name) {
 
 void test_parser(const char *s) {
 	ListLexer lexer(s);
-	ListParser parser(&lexer);
+	ListParser parser(&lexer, 5);
 	parser.Parse();
 }
 
