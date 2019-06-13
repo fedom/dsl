@@ -39,5 +39,10 @@ public:
 			: MyBaseException(s, file, line) { exception_name_ = "LookAheadStepBeyondCapacity";}
 };
 
+class UnregcognizeStatPattern : public MyBaseException { 
+public:
+	UnregcognizeStatPattern(const char *s, const char *file, int line) 
+			: MyBaseException(s, file, line) { exception_name_ = "UnregcognizeStatPattern";}
+};
 
 #endif//__MY_EXCEPT_H__

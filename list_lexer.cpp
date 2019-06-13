@@ -43,7 +43,7 @@ Token ListLexer::GetNextToken() {
 
 		} else if (c_ == '=') {
 			Consume();
-			return Token(TOKEN_EQUAL, "=");
+			return Token(TOKEN_ASSIGN, "=");
 
 		} else {
 			std::string s;

@@ -2,7 +2,7 @@
 #include "list_lexer.h"
 #include "my_except.h"
 
-ListParser::ListParser(ListLexer *lexer, int k) : Parser(lexer, k) {
+ListParser::ListParser(ListLexer *lexer) : Parser(lexer) {
 	
 }
 
@@ -13,7 +13,7 @@ ListParser::~ListParser() {
 void ListParser::Parse() {
 
 	try {
-		List();
+		Stat();
 	} catch (const ParserUnwantedTokenException &e) {
 		printf("Parse token error: %s\n", e.what());
 	} catch (const InvalidCharException &e) {
@@ -21,6 +21,59 @@ void ListParser::Parse() {
 	}
 }
 
+void ListParser::Stat() {
+	if (SpeculateStatAlt1()) {
+		List();
+		Match(TOKEN_EOF);
+
+	} else if (SpeculateStatAlt2()) {
+		Assign();
+		Match(TOKEN_EOF);
+	
+	} else {
+		throw UnregcognizeStatPattern("", __FILE__, __LINE__);
+	}	
+}
+
+bool ListParser::SpeculateStatAlt1() {
+	bool success = false;
+
+	MarkBase();
+
+	try {
+		List();
+		Match(TOKEN_EOF);
+		success = true;
+	} catch (const ParserUnwantedTokenException &e) {
+		success = false;	
+	}
+	
+	RestoreBase();
+	return success;
+}
+
+bool ListParser::SpeculateStatAlt2() {
+	bool success = false;
+	MarkBase();
+
+	try {
+		List();
+		Match(TOKEN_ASSIGN);
+		success = true;
+	
+	} catch (const ParserUnwantedTokenException &e) {
+		success = false;
+	}
+
+	RestoreBase();
+	return success;
+}
+
+void ListParser::Assign() {
+	List();
+	Match(TOKEN_ASSIGN);
+	List();
+}
 
 void ListParser::List() {
 	if (LT(1) == TOKEN_EOF)
