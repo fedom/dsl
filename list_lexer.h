@@ -7,7 +7,7 @@
 #define TOKEN_LSBRACK		4
 #define TOKEN_RSBRACK		5
 #define	TOKEN_COMMA			6
-#define	TOKEN_EQUAL			7
+#define	TOKEN_ASSIGN		7
 
 
 

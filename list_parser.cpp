@@ -44,9 +44,9 @@ void ListParser::Elements() {
 }
 
 void ListParser::Element() {
-	if (LT(1) == TOKEN_NAME && LT(2) == TOKEN_EQUAL) {
+	if (LT(1) == TOKEN_NAME && LT(2) == TOKEN_ASSIGN) {
 		Match(TOKEN_NAME);
-		Match(TOKEN_EQUAL);
+		Match(TOKEN_ASSIGN);
 		Match(TOKEN_NAME);
 	} else if (LT(1) == TOKEN_NAME) {
 		Match(TOKEN_NAME);	
