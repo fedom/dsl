@@ -56,3 +56,11 @@ void Parser::Consume() {
 bool Parser::IsSpeculating() {
 	return !base_i_.empty();
 }
+
+
+int Parser::CurPos() {
+	return i_;
+}
+void Parser::SetPos(int i) {
+	i_ = i;
+}

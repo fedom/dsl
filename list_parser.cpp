@@ -75,13 +75,50 @@ void ListParser::Assign() {
 	List();
 }
 
-void ListParser::List() {
+
+void ListParser::_List() {
 	if (LT(1) == TOKEN_EOF)
 		return;
 
 	Match(TOKEN_LSBRACK);
 	Elements();
 	Match(TOKEN_RSBRACK);
+}
+
+void ListParser::List() {
+
+	if (!IsSpeculating()) {
+		_List();
+		return;
+	}
+
+	int start_pos = CurPos();	
+	int end_pos = 0;
+	auto iter = list_speculate_cache_.find(start_pos);
+
+	if (iter != list_speculate_cache_.end()) {
+		end_pos = iter->second;
+	}
+	// On failing, throw to notify caller fail
+	if (end_pos < 0) {
+		throw ParserUnwantedTokenException("cached fail.", __FILE__, __LINE__);
+	} else if (end_pos > 0) {
+		SetPos(end_pos);	
+		printf("cached hit end_pos:%d %s\n", end_pos, lookahead_tokens_[end_pos].name.c_str());
+		return;
+	}
+
+	// Intercept the inner rule call incase they throw exception on failure, so we can
+	// update the list_speculate_cache_.	
+	try {
+		_List();	
+	} catch (const ParserUnwantedTokenException &e) {
+		// On failure, we get here.
+		list_speculate_cache_[start_pos] = -1;			
+		throw;
+	}
+
+	list_speculate_cache_[start_pos] = CurPos();	
 }
 
 void ListParser::Elements() {
@@ -112,5 +149,4 @@ void ListParser::Element() {
 	}
 
 }
-
 

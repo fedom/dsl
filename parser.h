@@ -23,6 +23,8 @@ protected:
 	void Consume();
 	void Sync(int i);
 	bool IsSpeculating();
+	int CurPos();
+	void SetPos(int i);
 
 	Lexer *lexer_;
 	std::vector<Token> lookahead_tokens_;
