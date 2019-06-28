@@ -9,5 +9,6 @@ include_directories(
 )
 
 set(SRC_LIST lexer.cpp list_lexer.cpp parser.cpp list_parser.cpp)
-
+add_subdirectory(utils)
 add_executable(lexer ${SRC_LIST} main.cpp)
+target_link_libraries(lexer utils)

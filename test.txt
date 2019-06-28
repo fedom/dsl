@@ -1,1 +1,1 @@
-[bb, adb, [1,[], ab = ad, d, 1], abc, liuhuan, ssss] + [11,a]
+[bb, adb, [1,[], ab = ad, d, 1], abc, liuhuan, ssss]

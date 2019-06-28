@@ -19,9 +19,14 @@ void ListParser::Parse() {
 	} catch (const InvalidCharException &e) {
 		printf("InvalidCharException error: %s\n", e.what());
 	}
+
+	root_->PrintTree("", true);
 }
 
 void ListParser::Stat() {
+	
+	UPDATE_CURRENT_NODE("<stat>");
+
 	if (SpeculateStatAlt1()) {
 		List();
 		Match(TOKEN_EOF);
@@ -33,6 +38,8 @@ void ListParser::Stat() {
 	} else {
 		throw UnregcognizeStatPattern("", __FILE__, __LINE__);
 	}	
+
+	RESTORE_CURRENT_NODE();
 }
 
 bool ListParser::SpeculateStatAlt1() {
@@ -70,9 +77,11 @@ bool ListParser::SpeculateStatAlt2() {
 }
 
 void ListParser::Assign() {
+	UPDATE_CURRENT_NODE("<assign>");
 	List();
 	Match(TOKEN_ASSIGN);
 	List();
+	RESTORE_CURRENT_NODE();
 }
 
 
@@ -80,9 +89,11 @@ void ListParser::_List() {
 	if (LT(1) == TOKEN_EOF)
 		return;
 
+	UPDATE_CURRENT_NODE("<list>");
 	Match(TOKEN_LSBRACK);
 	Elements();
 	Match(TOKEN_RSBRACK);
+	RESTORE_CURRENT_NODE();
 }
 
 void ListParser::List() {
@@ -123,17 +134,20 @@ void ListParser::List() {
 
 void ListParser::Elements() {
 	// empty list
+
 	if (LT(1) == TOKEN_RSBRACK)
 		return;
-
+	UPDATE_CURRENT_NODE("<elements>");
 	Element();
 	while (LT(1) == TOKEN_COMMA) {
 		Match(TOKEN_COMMA);
 		Element();	
 	}
+	RESTORE_CURRENT_NODE();
 }
 
 void ListParser::Element() {
+	UPDATE_CURRENT_NODE("<element>");
 	if (LT(1) == TOKEN_NAME && LT(2) == TOKEN_ASSIGN) {
 		Match(TOKEN_NAME);
 		Match(TOKEN_ASSIGN);
@@ -147,6 +161,7 @@ void ListParser::Element() {
 	} else {
 		throw ParserUnwantedTokenException(LA(1).name.c_str(), __FILE__, __LINE__);
 	}
+	RESTORE_CURRENT_NODE();
 
 }
 

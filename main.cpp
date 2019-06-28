@@ -18,6 +18,8 @@ void test_parser(const char *s) {
 	ListLexer lexer(s);
 	ListParser parser(&lexer);
 	parser.Parse();
+
+
 }
 
 void test_lexer(const char *s) {
